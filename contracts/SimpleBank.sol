@@ -69,17 +69,21 @@ contract SimpleBank {
 
     /// @notice Deposit ether into bank
     /// @return The balance of the user after the deposit is made
-    function deposit() public returns (uint) {
-      // 1. Add the appropriate keyword so that this function can receive ether
-    
-      // 2. Users should be enrolled before they can make deposits
+    function deposit() public payable returns (uint) {
+        // 1. Add the appropriate keyword so that this function can receive ether
+      
+        // 2. Users should be enrolled before they can make deposits
+        require(enrolled[msg.sender] == true, "Sender must be enrolled before making deposits.");
 
-      // 3. Add the amount to the user's balance. Hint: the amount can be
-      //    accessed from of the global variable `msg`
+        // 3. Add the amount to the user's balance. Hint: the amount can be
+        //    accessed from of the global variable `msg`
+        balances[msg.sender] = balances[msg.sender] + msg.value;
 
-      // 4. Emit the appropriate event associated with this function
+        // 4. Emit the appropriate event associated with this function
+        emit LogDepositMade(msg.sender, msg.value);
 
-      // 5. return the balance of sndr of this transaction
+        // 5. return the balance of sndr of this transaction
+        return balances[msg.sender];
     }
 
     /// @notice Withdraw ether from bank
